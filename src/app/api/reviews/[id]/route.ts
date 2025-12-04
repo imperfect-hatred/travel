@@ -1,42 +1,42 @@
 import { NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { getUserByEmail } from '@/lib/db/users'
+import { getReviewById, deleteReview } from '@/lib/db/reviews'
 import { db } from '@/lib/db'
 import { reviews } from '@/lib/db/schema'
 import { eq } from 'drizzle-orm'
-import { getUserByEmail } from '@/lib/db/users'
-import { getReviewById, deleteReview } from '@/lib/db/reviews'
 
-// GET запрос для получения одного отзыва
+// Получить отзыв по ID
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params; // Асинхронное получение параметров
-    const review = await getReviewById(id);
+    const { id } = params
+    const review = await getReviewById(id)
     
     if (!review) {
-      return NextResponse.json({ error: 'Отзыв не найден' }, { status: 404 });
+      return NextResponse.json({ error: 'Отзыв не найден' }, { status: 404 })
     }
     
-    return NextResponse.json({ review }, { status: 200 });
+    return NextResponse.json({ review }, { status: 200 })
   } catch (error: any) {
-    console.error('Ошибка при получении отзыва:', error);
+    console.error('Ошибка при получении отзыва:', error)
     return NextResponse.json(
       { error: 'Ошибка сервера при получении отзыва' },
       { status: 500 }
-    );
+    )
   }
 }
 
 // Обновить отзыв
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params; // Асинхронное получение параметров
+    const { id } = params
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
@@ -49,11 +49,13 @@ export async function PUT(
       return NextResponse.json({ error: 'Пользователь не найден' }, { status: 404 })
     }
 
-    // Проверяем, что отзыв принадлежит пользователю
     const review = await getReviewById(id)
 
     if (!review || review.userId !== user.id) {
-      return NextResponse.json({ error: 'Отзыв не найден или не принадлежит пользователю' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'Отзыв не найден или не принадлежит пользователю' },
+        { status: 404 }
+      )
     }
 
     const body = await request.json()
@@ -73,7 +75,6 @@ export async function PUT(
         updatedAt: new Date(),
       })
       .where(eq(reviews.id, id))
-      .run()
 
     return NextResponse.json({ success: true }, { status: 200 })
   } catch (error: any) {
@@ -88,10 +89,10 @@ export async function PUT(
 // Удалить отзыв
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params; // Асинхронное получение параметров
+    const { id } = params
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
@@ -104,10 +105,13 @@ export async function DELETE(
       return NextResponse.json({ error: 'Пользователь не найден' }, { status: 404 })
     }
 
-    const success = await deleteReview(id, user.id);
+    const success = await deleteReview(id, user.id)
 
     if (!success) {
-      return NextResponse.json({ error: 'Отзыв не найден или не принадлежит пользователю' }, { status: 404 })
+      return NextResponse.json(
+        { error: 'Отзыв не найден или не принадлежит пользователю' },
+        { status: 404 }
+      )
     }
 
     return NextResponse.json({ success: true }, { status: 200 })

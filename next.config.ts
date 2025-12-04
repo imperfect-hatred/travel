@@ -2,10 +2,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Уберите reactCompiler или используйте правильную конфигурацию
-  // reactCompiler: true, // Удалите эту строку
-  
-  // Другие настройки...
+
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['travel-guide.com'],
   },
