@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# database
+database.db
+database.db-journal
+*.db
+*.db-journal
+
+# drizzle
+/drizzle
