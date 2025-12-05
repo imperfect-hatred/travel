@@ -9,10 +9,10 @@ import { getUserByEmail } from '@/lib/db/users'
 // Получить маршрут по ID
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ id: string }> | { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const routeId = typeof params === 'object' && 'then' in params ? (await params).id : params.id
+    const { id: routeId } = await params
     
     const session = await getServerSession(authOptions)
     
@@ -60,10 +60,10 @@ export async function GET(
 // Обновить маршрут
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> | { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const routeId = typeof params === 'object' && 'then' in params ? (await params).id : params.id
+    const { id: routeId } = await params
     
     const session = await getServerSession(authOptions)
     
@@ -141,10 +141,10 @@ export async function PUT(
 // Удалить маршрут
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> | { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const routeId = typeof params === 'object' && 'then' in params ? (await params).id : params.id
+    const { id: routeId } = await params
     
     const session = await getServerSession(authOptions)
     
