@@ -594,7 +594,12 @@ function seedDatabase() {
         ]).run()
 
         // Добавляем точки маршрута для первого маршрута
-        if (parisId && eiffelTowerId) {
+        // Получаем ID из БД
+        const parisFromDb = db.select().from(cities).where(eq(cities.name, 'Париж')).limit(1).get()
+        const eiffelTowerFromDb = db.select().from(attractions).where(eq(attractions.name, 'Эйфелева башня')).limit(1).get()
+        const franceFromDb = db.select().from(countries).where(eq(countries.name, 'Франция')).limit(1).get()
+        
+        if (parisFromDb && eiffelTowerFromDb && franceFromDb) {
           db.insert(routePoints).values([
             {
               routeId: route1Id,
@@ -602,9 +607,9 @@ function seedDatabase() {
               order: 1,
               title: 'Эйфелева башня',
               description: 'Начните день с посещения символа Парижа',
-              attractionId: eiffelTowerId,
-              cityId: parisId,
-              countryId: franceId,
+              attractionId: eiffelTowerFromDb.id,
+              cityId: parisFromDb.id,
+              countryId: franceFromDb.id,
               latitude: 48.8584,
               longitude: 2.2945,
             },
@@ -614,8 +619,8 @@ function seedDatabase() {
               order: 2,
               title: 'Лувр',
               description: 'Посетите один из крупнейших музеев мира',
-              cityId: parisId,
-              countryId: franceId,
+              cityId: parisFromDb.id,
+              countryId: franceFromDb.id,
               latitude: 48.8606,
               longitude: 2.3376,
             },
@@ -625,8 +630,8 @@ function seedDatabase() {
               order: 1,
               title: 'Нотр-Дам',
               description: 'Готический собор на острове Сите',
-              cityId: parisId,
-              countryId: franceId,
+              cityId: parisFromDb.id,
+              countryId: franceFromDb.id,
               latitude: 48.8530,
               longitude: 2.3499,
             },

@@ -68,6 +68,11 @@ export default async function AttractionPage({ params }: { params: Promise<{ id:
     attraction = fallbackAttraction as any
   }
 
+  // Проверяем, что attraction существует (для TypeScript)
+  if (!attraction) {
+    notFound()
+  }
+
   // Получаем связанные данные
   const city = attraction.cityId ? await getCityById(attraction.cityId) : null
   const country = attraction.countryId ? await getCountryById(attraction.countryId) : null
@@ -81,7 +86,7 @@ export default async function AttractionPage({ params }: { params: Promise<{ id:
     countrySlug: (attraction as any).country?.name?.toLowerCase() || (attraction as any).country?.code?.toLowerCase() || (attraction as any).countrySlug || '',
     image: attraction.image || '/globe.svg',
     description: attraction.description || '',
-    rating: attraction.rating || 0,
+    rating: (attraction as any).rating || 0, // rating берется из fallback данных или вычисляется из reviews
     latitude: attraction.latitude || null,
     longitude: attraction.longitude || null,
     address: attraction.address || '',

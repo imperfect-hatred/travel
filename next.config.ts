@@ -1,5 +1,6 @@
 // next.config.ts
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   eslint: {
@@ -23,6 +24,8 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '2mb',
     },
   },
+  // Исправление предупреждения о workspace root
+  outputFileTracingRoot: path.join(__dirname),
 };
 
 export default nextConfig;

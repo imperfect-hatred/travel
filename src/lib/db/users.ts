@@ -19,13 +19,13 @@ export function createUser(email: string, password: string, name?: string) {
       role: 'USER',
       createdAt: now,
       updatedAt: now,
-    }).returning()
+    }).returning().get()
 
-    if (!result || result.length === 0) {
+    if (!result) {
       throw new Error('Не удалось создать пользователя')
     }
 
-    return result[0]
+    return result
   } catch (error: any) {
     // Проверяем на дубликат email
     if (error.message?.includes('UNIQUE constraint') || error.code === 'SQLITE_CONSTRAINT_UNIQUE') {

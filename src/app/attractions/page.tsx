@@ -75,7 +75,7 @@ export default async function AttractionsPage() {
           country: country?.name || 'Не указано',
           image: a.image || '/globe.svg',
           description: a.description || '',
-          rating: a.rating, // Используем рейтинг из БД, если есть
+          rating: (a as any).rating || 0, // Используем рейтинг из БД, если есть
         }
       }))).map(item => [item.id, item])).values())
     : fallbackAttractions

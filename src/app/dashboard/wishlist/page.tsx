@@ -59,10 +59,11 @@ export default function WishlistPage() {
     return 'Место'
   }
 
-  const getPriorityColor = (priority: number) => {
-    if (priority >= 4) return 'bg-red-100 text-red-800'
-    if (priority >= 3) return 'bg-orange-100 text-orange-800'
-    if (priority >= 2) return 'bg-yellow-100 text-yellow-800'
+  const getPriorityColor = (priority: number | null) => {
+    const p = priority ?? 1
+    if (p >= 4) return 'bg-red-100 text-red-800'
+    if (p >= 3) return 'bg-orange-100 text-orange-800'
+    if (p >= 2) return 'bg-yellow-100 text-yellow-800'
     return 'bg-gray-100 text-gray-800'
   }
 
@@ -114,7 +115,7 @@ export default function WishlistPage() {
                           {getItemType(item)}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded ${getPriorityColor(item.priority)}`}>
-                          Приоритет: {item.priority}
+                          Приоритет: {item.priority ?? 1}
                         </span>
                       </div>
                       <h3 className="text-lg font-semibold">{getItemName(item)}</h3>

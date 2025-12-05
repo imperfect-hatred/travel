@@ -26,7 +26,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
     
     // Если нет в расширенных данных, пробуем найти в базовых данных
     if (!fallbackCity) {
-      fallbackCity = citiesData.find((c: any) => c.id === cityId);
+          fallbackCity = citiesData.find((c: any) => c.id === cityId);
     }
     
     console.log("Fallback город:", fallbackCity);
@@ -56,6 +56,11 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
       }
   }
 
+  // Проверяем, что city существует (для TypeScript)
+  if (!city) {
+    notFound()
+  }
+
   // Получаем достопримечательности города из БД
   const cityAttractions = city.id ? await getAttractionsByCity(city.id) : []
   
@@ -70,7 +75,7 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
 
     // Получаем название страны и slug
     const countryName = country?.name || (typeof city.country === 'string' ? city.country : null) || 'Не указано';
-    const countrySlug = country?.name?.toLowerCase() || city.countrySlug || '';
+    const countrySlug = country?.name?.toLowerCase() || (city as any).countrySlug || '';
 
   // Форматируем данные для отображения
   const displayData = {
@@ -85,9 +90,9 @@ export default async function CityPage({ params }: { params: Promise<{ id: strin
     climate: city.climate || 'Не указано',
     latitude: city.latitude || null,
     longitude: city.longitude || null,
-    attractions: cityAttractions.length > 0 
+    attractions: cityAttractions.length > 0
       ? cityAttractions.map(a => ({ name: a.name, description: a.description }))
-      : city.attractions || [],
+      : (city as any).attractions || [],
   }
 
   return (

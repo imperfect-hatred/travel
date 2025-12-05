@@ -6,8 +6,9 @@ export default function CountriesPage() {
   const countriesFromDb = getAllCountries()
   
   // Используем данные из БД, если они есть, иначе fallback
-  const countries = countriesFromDb.length > 0 
-    ? countriesFromDb.map(c => ({
+  const countriesArray = Array.isArray(countriesFromDb) ? countriesFromDb : []
+  const countries = countriesArray.length > 0
+    ? countriesArray.map((c: { id: string; name: string; capital?: string | null; image?: string | null; description?: string | null }) => ({
         id: c.id,
         name: c.name,
         slug: c.name.toLowerCase(),

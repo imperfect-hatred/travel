@@ -1,6 +1,9 @@
 import { db } from './index'
-import { visitedPlaces, NewVisitedPlace, VisitedPlace } from './schema'
-import { eq, and, InferSelectModel } from 'drizzle-orm'
+import { visitedPlaces } from './schema'
+import { eq, and, InferSelectModel, InferInsertModel } from 'drizzle-orm'
+
+type VisitedPlace = InferSelectModel<typeof visitedPlaces>
+type NewVisitedPlace = InferInsertModel<typeof visitedPlaces>
 import { getCountryById } from './countries'
 import { getCityById, createCityFromFallback } from './cities'
 import { getAttractionById } from './attractions'
@@ -69,13 +72,13 @@ export async function addVisitedPlace(data: NewVisitedPlace): Promise<VisitedPla
         console.log(`Попытка создать город с ID ${data.cityId} из fallback данных...`);
         try {
           // Импортируем fallback данные динамически из страницы городов
-          const { citiesData } = await import('../../app/cities/page');
+          const { citiesData } = await import('../data/cities');
           let fallbackCity = citiesData.find((c: any) => c.id === data.cityId);
           
           // Если не нашли в citiesData, пробуем расширенные fallback данные
           if (!fallbackCity) {
             try {
-              const { fallbackCitiesData } = await import('../../app/cities/[id]/page');
+              const { fallbackCitiesData } = await import('../data/cities');
               fallbackCity = fallbackCitiesData?.[data.cityId];
             } catch (e) {
               // Игнорируем ошибку импорта

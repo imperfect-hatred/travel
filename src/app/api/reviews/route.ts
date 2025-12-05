@@ -4,7 +4,7 @@ import { authOptions } from '@/lib/auth'
 import { users } from '@/lib/db/schema'
 import { eq, desc } from 'drizzle-orm'
 import { getUserByEmail } from '@/lib/db/users'
-import { getReviewsForEntity, createReview } from '@/lib/db/reviews'
+import { getReviewsForEntity, createReview, type ReviewWithUser } from '@/lib/db/reviews'
 
 // Получить отзывы
 export async function GET(request: Request) {
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     const cityId = searchParams.get('cityId')
     const attractionId = searchParams.get('attractionId')
 
-    let allReviews
+    let allReviews: ReviewWithUser[]
 
     if (countryId) {
       allReviews = await getReviewsForEntity('country', countryId)

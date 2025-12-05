@@ -47,6 +47,11 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
     }
   }
 
+  // Проверяем, что route существует (для TypeScript)
+  if (!route) {
+    notFound()
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-600">
       <main className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
@@ -62,9 +67,9 @@ export default async function RoutePage({ params }: { params: Promise<{ route: s
                   ⏱️ {typeof route.duration === 'number' ? `${route.duration} дней` : route.duration}
                 </span>
               )}
-              {route.difficulty && (
+              {(route as any).difficulty && (
                 <span className="inline-block bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
-                  ⚡ {route.difficulty}
+                  ⚡ {(route as any).difficulty}
                 </span>
               )}
             </div>

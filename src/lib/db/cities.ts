@@ -57,7 +57,11 @@ async function getOrCreateCountry(countryName: string, countrySlug?: string): Pr
     
     if (!country && countrySlug) {
       // Пробуем найти по slug
-      country = await getCountryBySlug(countrySlug);
+      const countryBySlug = await getCountryBySlug(countrySlug);
+      if (countryBySlug) {
+        // Используем id напрямую, так как типы могут отличаться
+        return countryBySlug.id;
+      }
     }
     
     if (country) {

@@ -1,6 +1,9 @@
 import { db } from './index'
-import { wishlists, NewWishlist, Wishlist } from './schema'
-import { eq, and, InferSelectModel } from 'drizzle-orm'
+import { wishlists } from './schema'
+import { eq, and, InferSelectModel, InferInsertModel } from 'drizzle-orm'
+
+type Wishlist = InferSelectModel<typeof wishlists>
+type NewWishlist = InferInsertModel<typeof wishlists>
 import { getCountryById } from './countries'
 import { getCityById, createCityFromFallback } from './cities'
 import { getAttractionById } from './attractions'
@@ -69,7 +72,7 @@ export async function addWishlistItem(data: NewWishlist): Promise<Wishlist | und
         console.log(`Попытка создать город с ID ${data.cityId} из fallback данных...`);
         try {
           // Импортируем fallback данные динамически
-          const { citiesData } = await import('../../app/cities/page');
+          const { citiesData } = await import('../data/cities');
           const fallbackCity = citiesData.find((c: any) => c.id === data.cityId);
           
           if (fallbackCity) {

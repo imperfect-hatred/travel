@@ -60,7 +60,7 @@ const authOptions = {
     },
     async session({ session, token }) {
       if (session?.user && token?.id) {
-        session.user.id = token.id
+        (session.user as { id: string }).id = token.id
       }
       return session
     },

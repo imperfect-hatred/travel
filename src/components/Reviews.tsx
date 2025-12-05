@@ -177,12 +177,11 @@ export function Reviews({ countryId, cityId, attractionId }: ReviewsProps) {
               key={review.id}
               className="bg-white border border-gray-200 rounded-lg p-6"
             >
-              {console.log("Review Rating:", review.rating)}
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <span className="font-medium text-gray-800">
-                      {review.user?.name || review.user?.email || 'Анонимный пользователь'}
+                      {review.user?.name || 'Анонимный пользователь'}
                     </span>
                     <div className="flex items-center">
                       {[...Array(5)].map((_, i) => (
