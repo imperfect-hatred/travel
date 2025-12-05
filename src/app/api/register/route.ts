@@ -83,7 +83,7 @@ export async function POST(request: Request) {
     // Проверяем существование пользователя
     const existingUser = db
       .prepare('SELECT id FROM users WHERE email = ?')
-      .get(email.toLowerCase().trim())
+      .get(email.toLowerCase().trim()) as { id: string } | undefined
 
     if (existingUser) {
       console.log('❌ Пользователь уже существует:', email)
@@ -121,7 +121,14 @@ export async function POST(request: Request) {
     // Получаем созданного пользователя
     const user = db
       .prepare('SELECT id, email, name, role, created_at FROM users WHERE id = ?')
-      .get(userId)
+      .get(userId) as { id: string; email: string; name: string | null; role: string; created_at: number } | undefined
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Ошибка при получении созданного пользователя' },
+        { status: 500 }
+      )
+    }
 
     return NextResponse.json(
       {
