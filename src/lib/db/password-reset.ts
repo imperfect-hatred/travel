@@ -2,7 +2,12 @@ import Database from 'better-sqlite3'
 import path from 'path'
 import { randomBytes } from 'crypto'
 
-const dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'database.db')
+// На Vercel serverless используем /tmp
+const isVercel = process.env.VERCEL === '1'
+const dbPath = process.env.DATABASE_PATH || 
+  (isVercel 
+    ? path.join('/tmp', 'database.db')
+    : path.join(process.cwd(), 'database.db'))
 const sqlite = new Database(dbPath)
 
 /**

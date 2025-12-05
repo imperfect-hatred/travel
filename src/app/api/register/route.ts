@@ -5,7 +5,12 @@ import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto'
 
 // Путь к базе данных
-const dbPath = path.join(process.cwd(), 'database.db')
+// На Vercel serverless используем /tmp, так как файловая система read-only
+const isVercel = process.env.VERCEL === '1'
+const dbPath = process.env.DATABASE_PATH || 
+  (isVercel 
+    ? path.join('/tmp', 'database.db')
+    : path.join(process.cwd(), 'database.db'))
 
 // Функция для получения подключения к БД
 function getDb() {
@@ -31,7 +36,7 @@ function getDb() {
 }
 
 export async function POST(request: Request) {
-  let db: Database | null = null
+  let db: ReturnType<typeof getDb> | null = null
   
   try {
     // Парсим тело запроса

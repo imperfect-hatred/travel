@@ -7,7 +7,17 @@ import fs from 'fs'
 import { randomUUID } from 'crypto'
 
 // Создаем подключение к базе данных
-const dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'database.db')
+// На Vercel serverless используем /tmp, так как файловая система read-only
+const isVercel = process.env.VERCEL === '1'
+const dbPath = process.env.DATABASE_PATH || 
+  (isVercel 
+    ? path.join('/tmp', 'database.db')
+    : path.join(process.cwd(), 'database.db'))
+
+// Создаем директорию, если её нет (только для /tmp на Vercel)
+if (isVercel && !fs.existsSync('/tmp')) {
+  fs.mkdirSync('/tmp', { recursive: true })
+}
 
 // Создаем файл базы данных, если его нет
 if (!fs.existsSync(dbPath)) {
@@ -15,7 +25,19 @@ if (!fs.existsSync(dbPath)) {
   // Файл будет создан автоматически при первом подключении
 }
 
-const sqlite = new Database(dbPath)
+let sqlite: ReturnType<typeof Database>
+try {
+  sqlite = new Database(dbPath)
+} catch (error) {
+  console.error('Ошибка при создании подключения к БД:', error)
+  // На Vercel может не работать, используем in-memory БД как fallback
+  if (isVercel) {
+    console.warn('⚠️  Использование in-memory БД на Vercel')
+    sqlite = new Database(':memory:')
+  } else {
+    throw error
+  }
+}
 
 // Включаем foreign keys
 sqlite.pragma('foreign_keys = ON')
