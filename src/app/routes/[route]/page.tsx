@@ -29,7 +29,7 @@ const routesData: Record<string, any> = {
   }
 }
 
-export default async function RoutePage({ params }: { params: { route: string } }) {
+export default async function RoutePage({ params }: { params: Promise<{ route: string }> }) {
   const resolvedParams = await params;
   const routeId = decodeURIComponent(resolvedParams.route)
   

@@ -87,7 +87,7 @@ export const fallbackCitiesData: Record<string, any> = {
   },
 }
 
-export default async function CityPage({ params }: { params: { id: string } }) {
+export default async function CityPage({ params }: { params: Promise<{ id: string }> }) {
   try {
   const resolvedParams = await params;
   const cityId = resolvedParams.id;

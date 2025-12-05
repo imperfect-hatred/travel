@@ -171,7 +171,7 @@ const countriesData: Record<string, any> = {
   }
 }
 
-export default async function CountryPage({ params }: { params: { country: string } }) {
+export default async function CountryPage({ params }: { params: Promise<{ country: string }> }) {
   const resolvedParams = await params;
   const countrySlug = decodeURIComponent(resolvedParams.country).toLowerCase()
   

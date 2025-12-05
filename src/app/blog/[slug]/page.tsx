@@ -209,7 +209,7 @@ const blogPosts: Record<string, any> = {
   }
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const postSlug = decodeURIComponent(resolvedParams.slug).toLowerCase()
   
