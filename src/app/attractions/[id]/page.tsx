@@ -52,7 +52,7 @@ const attractionsData: Record<string, any> = {
   },
 }
 
-export default async function AttractionPage({ params }: { params: { id: string } }) {
+export default async function AttractionPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const attractionId = resolvedParams.id;
 
