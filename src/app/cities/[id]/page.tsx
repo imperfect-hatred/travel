@@ -89,36 +89,36 @@ export const fallbackCitiesData: Record<string, any> = {
 
 export default async function CityPage({ params }: { params: { id: string } }) {
   try {
-    const resolvedParams = await params;
-    const cityId = resolvedParams.id;
-    console.log(`Запрошенный cityId: ${cityId}`);
+  const resolvedParams = await params;
+  const cityId = resolvedParams.id;
+  console.log(`Запрошенный cityId: ${cityId}`);
 
-    // Пытаемся получить город из БД
-    let city = await getCityById(cityId)
-    console.log("Город из БД:", city);
+  // Пытаемся получить город из БД
+  let city = await getCityById(cityId)
+  console.log("Город из БД:", city);
 
     // Если не найдено в БД, используем fallback данные и создаем в БД
-    if (!city) {
-      // Сначала пробуем получить из расширенных fallback данных
-      let fallbackCity = fallbackCitiesData[cityId];
-      
-      // Если нет в расширенных данных, пробуем импортировать из page.tsx
-      if (!fallbackCity) {
-        try {
-          const { citiesData } = await import('../page');
-          if (citiesData && Array.isArray(citiesData)) {
-            fallbackCity = citiesData.find((c: any) => c.id === cityId);
-          }
-        } catch (error) {
-          console.error('Ошибка при импорте citiesData:', error);
+  if (!city) {
+    // Сначала пробуем получить из расширенных fallback данных
+    let fallbackCity = fallbackCitiesData[cityId];
+    
+    // Если нет в расширенных данных, пробуем импортировать из page.tsx
+    if (!fallbackCity) {
+      try {
+        const { citiesData } = await import('../page');
+        if (citiesData && Array.isArray(citiesData)) {
+          fallbackCity = citiesData.find((c: any) => c.id === cityId);
         }
+      } catch (error) {
+        console.error('Ошибка при импорте citiesData:', error);
       }
-      
-      console.log("Fallback город:", fallbackCity);
-      if (!fallbackCity) {
-        console.error(`Город с ID ${cityId} не найден ни в БД, ни в fallback данных.`);
-        notFound()
-      }
+    }
+    
+    console.log("Fallback город:", fallbackCity);
+    if (!fallbackCity) {
+      console.error(`Город с ID ${cityId} не найден ни в БД, ни в fallback данных.`);
+      notFound()
+    }
       
       // Пытаемся создать город в БД из fallback данных
       try {
@@ -137,14 +137,14 @@ export default async function CityPage({ params }: { params: { id: string } }) {
       
       // Если не удалось создать в БД, используем fallback данные напрямую
       if (!city) {
-        city = fallbackCity as any
+    city = fallbackCity as any
       }
-    }
+  }
 
-    // Получаем достопримечательности города из БД
-    const cityAttractions = city.id ? await getAttractionsByCity(city.id) : []
-    
-    // Получаем страну для отображения
+  // Получаем достопримечательности города из БД
+  const cityAttractions = city.id ? await getAttractionsByCity(city.id) : []
+  
+  // Получаем страну для отображения
     // Если city.country уже загружен как объект (из with: { country: true }), используем его
     let country = null;
     if (city.country && typeof city.country === 'object' && 'name' in city.country) {
@@ -157,25 +157,25 @@ export default async function CityPage({ params }: { params: { id: string } }) {
     const countryName = country?.name || (typeof city.country === 'string' ? city.country : null) || 'Не указано';
     const countrySlug = country?.name?.toLowerCase() || city.countrySlug || '';
 
-    // Форматируем данные для отображения
-    const displayData = {
-      id: city.id || undefined,
-      name: city.name,
+  // Форматируем данные для отображения
+  const displayData = {
+    id: city.id || undefined,
+    name: city.name,
       country: countryName,
       countrySlug: countrySlug,
-      image: city.image || '/globe.svg',
-      description: city.description || '',
-      population: city.population ? `${(city.population / 1000000).toFixed(1)} млн` : city.population || 'Не указано',
-      bestTime: city.bestTime || 'Круглый год',
-      climate: city.climate || 'Не указано',
-      latitude: city.latitude || null,
-      longitude: city.longitude || null,
-      attractions: cityAttractions.length > 0 
-        ? cityAttractions.map(a => ({ name: a.name, description: a.description }))
-        : city.attractions || [],
-    }
+    image: city.image || '/globe.svg',
+    description: city.description || '',
+    population: city.population ? `${(city.population / 1000000).toFixed(1)} млн` : city.population || 'Не указано',
+    bestTime: city.bestTime || 'Круглый год',
+    climate: city.climate || 'Не указано',
+    latitude: city.latitude || null,
+    longitude: city.longitude || null,
+    attractions: cityAttractions.length > 0 
+      ? cityAttractions.map(a => ({ name: a.name, description: a.description }))
+      : city.attractions || [],
+  }
 
-    return (
+  return (
     <div className="min-h-screen bg-gray-50 text-gray-600">
       <main className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
@@ -296,7 +296,7 @@ export default async function CityPage({ params }: { params: { id: string } }) {
         </div>
       </main>
     </div>
-    )
+  )
   } catch (error: any) {
     console.error('Ошибка при загрузке страницы города:', error);
     // Если произошла ошибка, пробуем показать fallback данные

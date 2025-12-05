@@ -28,12 +28,12 @@ export async function POST(request: NextRequest) {
       .where(eq(users.email, email.toLowerCase().trim()))
       .limit(1)
       .then(rows => rows[0])
-
+      
     // Для безопасности всегда возвращаем успех, даже если пользователь не найден
     if (!user) {
       console.log(`Запрос сброса пароля для несуществующего email: ${email}`)
       return NextResponse.json(
-        { 
+        {
           success: true,
           message: 'Если аккаунт с таким email существует, письмо отправлено'
         },

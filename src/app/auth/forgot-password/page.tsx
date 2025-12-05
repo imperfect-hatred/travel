@@ -60,34 +60,34 @@ export default function ForgotPasswordPage() {
           </h1>
           <h2 className="text-2xl font-semibold text-gray-800">
             Сброс пароля
-          </h2>
+        </h2>
           <p className="mt-2 text-sm text-gray-600">
             Введите email, указанный при регистрации
-          </p>
-        </div>
+            </p>
+          </div>
 
         <div className="bg-white py-8 px-6 shadow-lg rounded-xl sm:px-10 border border-gray-200">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Email адрес
-              </label>
-              <input
+                </label>
+                <input
                 id="email"
                 name="email"
-                type="email"
+                  type="email"
                 autoComplete="email"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-300 
                          placeholder-gray-500 text-gray-900 rounded-lg 
                          focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                          focus:z-10 sm:text-sm transition-colors"
                 placeholder="you@example.com"
-                disabled={loading}
-              />
-            </div>
+                  disabled={loading}
+                />
+              </div>
 
             {message && (
               <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
@@ -148,16 +148,16 @@ export default function ForgotPasswordPage() {
                 )}
               </button>
             </div>
-          </form>
+            </form>
 
-          <div className="mt-6 text-center">
-            <Link
-              href="/auth/signin"
-              className="text-blue-600 hover:text-blue-700 font-medium"
-            >
-              ← Вернуться к входу
-            </Link>
-          </div>
+            <div className="mt-6 text-center">
+              <Link
+                href="/auth/signin"
+                className="text-blue-600 hover:text-blue-700 font-medium"
+              >
+                ← Вернуться к входу
+              </Link>
+            </div>
         </div>
       </div>
     </div>

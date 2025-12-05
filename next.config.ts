@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    domains: ['travel-guide.com'],
+    domains: ['travel-project-practic.com'],
   },
 };
 

@@ -10,10 +10,10 @@ import { eq } from 'drizzle-orm'
 // Получить отзыв по ID
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const { id } = params
+    const id = typeof params === 'object' && 'then' in params ? (await params).id : params.id
     const review = await getReviewById(id)
     
     if (!review) {
@@ -33,10 +33,10 @@ export async function GET(
 // Обновить отзыв
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const { id } = params
+    const id = typeof params === 'object' && 'then' in params ? (await params).id : params.id
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
@@ -89,10 +89,10 @@ export async function PUT(
 // Удалить отзыв
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const { id } = params
+    const id = typeof params === 'object' && 'then' in params ? (await params).id : params.id
     const session = await getServerSession(authOptions)
     
     if (!session?.user?.email) {
