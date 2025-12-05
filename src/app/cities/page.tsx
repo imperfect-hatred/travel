@@ -1,63 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-
-// Временные данные о городах (позже будут из базы данных)
-export const citiesData = [
-  {
-    id: '1',
-    name: 'Париж',
-    country: 'Франция',
-    countrySlug: 'франция',
-    image: '/france.jpg',
-    description: 'Столица Франции, город романтики и искусства',
-    population: '2.1 млн',
-  },
-  {
-    id: '2',
-    name: 'Рим',
-    country: 'Италия',
-    countrySlug: 'италия',
-    image: '/italy.jpg',
-    description: 'Вечный город с богатой историей',
-    population: '2.8 млн',
-  },
-  {
-    id: '3',
-    name: 'Мадрид',
-    country: 'Испания',
-    countrySlug: 'испания',
-    image: '/spain.jpg',
-    description: 'Столица Испании, центр культуры и искусства',
-    population: '3.2 млн',
-  },
-  {
-    id: '4',
-    name: 'Токио',
-    country: 'Япония',
-    countrySlug: 'япония',
-    image: '/japan.jpg',
-    description: 'Современный мегаполис с древними традициями',
-    population: '13.9 млн',
-  },
-  {
-    id: '5',
-    name: 'Нью-Йорк',
-    country: 'США',
-    countrySlug: 'сша',
-    image: '/usa.jpg',
-    description: 'Город, который никогда не спит',
-    population: '8.3 млн',
-  },
-  {
-    id: '6',
-    name: 'Бангкок',
-    country: 'Таиланд',
-    countrySlug: 'таиланд',
-    image: '/tailand.jpg',
-    description: 'Столица Таиланда, город храмов и рынков',
-    population: '10.5 млн',
-  },
-]
+import { citiesData } from '@/lib/data/cities'
 
 export default function CitiesPage() {
   return (
